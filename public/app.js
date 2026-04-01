@@ -10,8 +10,10 @@ const { createTables, get, all, run } = require("./database");
 const { decryptData, encryptData, generateHash, generateKey } = require("./crypto-utils");
 
 const BASE_DIR = path.resolve(__dirname, "..");
-const UPLOAD_FOLDER = path.join(BASE_DIR, "uploads");
+const DATA_ROOT = process.env.DATA_DIR || process.env.RENDER_DISK_ROOT || BASE_DIR;
+const UPLOAD_FOLDER = path.join(DATA_ROOT, "uploads");
 const CLIENT_DIST_DIR = path.join(BASE_DIR, "frontend", "dist");
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(16).toString("hex");
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -20,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: crypto.randomBytes(16).toString("hex"),
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false
   })
@@ -424,9 +426,9 @@ if (fs.existsSync(CLIENT_DIST_DIR)) {
 async function start() {
   fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
   await createTables();
-  const port = 5000;
+  const port = Number(process.env.PORT) || 5000;
   app.listen(port, () => {
-    console.log(`Node app running at http://127.0.0.1:${port}`);
+    console.log(`Node app running on port ${port}`);
   });
 }
 

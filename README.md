@@ -116,6 +116,38 @@ The encrypted file will appear unreadable, which is expected because it is prote
 - SQLite database data is stored locally in `app_data.db`.
 - Activity logs help track important user actions.
 
+## Deploy On Render
+
+This project is ready for Render using the included `render.yaml`.
+
+### What Render needs
+
+- A Node web service
+- A persistent disk for:
+  - the SQLite database
+  - uploaded encrypted files
+
+### Deploy steps
+
+1. Push this project to GitHub.
+2. In Render, choose `New +` -> `Blueprint`.
+3. Connect your GitHub repository.
+4. Render will detect `render.yaml` automatically.
+5. Deploy the service.
+
+### Render configuration included
+
+- Build command: `npm install && npm run client:build`
+- Start command: `npm start`
+- Persistent disk mounted at `/opt/render/project/data`
+- `DATA_DIR` environment variable set automatically
+- `SESSION_SECRET` generated automatically
+
+### Important
+
+- This app should be deployed on Render with a persistent disk.
+- Without persistent storage, SQLite data and uploaded files will be lost on restart or redeploy.
+
 ## Future Improvements
 
 - Per-user encryption key management
