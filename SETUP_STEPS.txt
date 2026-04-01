@@ -1,0 +1,54 @@
+Secure File Sharing App - Setup and Run Steps
+
+1. Open terminal in this project folder:
+   d:\Cyber security project\file sharing and authentication
+
+2. Install the Node.js packages:
+   npm install
+
+3. Build the React frontend:
+   npm run client:build
+
+4. Start the Node.js app:
+   npm start
+
+5. Open this address in your browser:
+   http://127.0.0.1:5000
+
+Notes:
+- The app now uses Node.js + Express for the backend.
+- The frontend is built with React + TypeScript.
+- Uploaded files are encrypted automatically by the software before storage.
+- Uploaded encrypted files are stored in the uploads folder.
+- The local SQLite database is saved in this project folder as app_data.db.
+- Use view_db.js if you want to print database records in the terminal.
+
+How to use the app:
+1. Register at least 2 users.
+2. Log in with the first user and upload a file.
+3. Share that file with the second user.
+4. Log in with the second user to view the shared file.
+5. Use Download if you want the original decrypted file.
+6. Use Download Encrypted if you want the encrypted .enc file.
+7. Check recent activity in the app.
+
+How encrypted downloads work:
+1. When you upload a normal file, the backend encrypts it automatically.
+2. The encrypted version is stored on the server in the uploads folder.
+3. Download gives you the normal original file.
+4. Download Encrypted gives you the encrypted file with a .enc extension.
+
+How to see the encrypted file:
+1. Download the file using Download Encrypted.
+2. Open the .enc file in VS Code, Notepad++, or a hex editor.
+3. You will see unreadable/random-looking content instead of the original file data.
+4. This is expected because the file is encrypted.
+
+Best tools to view the encrypted file:
+- VS Code: good for a quick demo
+- Notepad++: simple text/binary inspection
+- HxD: best option on Windows for viewing encrypted bytes in hex format
+
+Important:
+- Do not expect the .enc file to open directly in apps like PDF Reader, Word, or image viewers.
+- Those apps expect normal files, but the encrypted download is protected binary data.

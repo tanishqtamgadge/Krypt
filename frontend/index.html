@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Krypt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#131318",
+              surface: "#131318",
+              "surface-container": "#1f1f25",
+              "surface-container-low": "#1b1b20",
+              "surface-container-high": "#2a292f",
+              "surface-container-highest": "#35343a",
+              "surface-container-lowest": "#0e0e13",
+              "outline-variant": "#3c494e",
+              outline: "#859399",
+              primary: "#46f1ff",
+              "primary-container": "#00d5e2",
+              secondary: "#d1bcff",
+              tertiary: "#f5d0ff",
+              "on-surface": "#e4e1e9",
+              "on-surface-variant": "#bbc9cf"
+            },
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Manrope"]
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-background text-on-surface font-body">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
