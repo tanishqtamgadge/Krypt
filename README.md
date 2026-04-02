@@ -118,35 +118,46 @@ The encrypted file will appear unreadable, which is expected because it is prote
 
 ## Deploy On Render
 
-This project is ready for Render using the included `render.yaml`.
+This project is configured for Render using the included `render.yaml`.
 
-### What Render needs
+### What is already configured
 
-- A Node web service
-- A persistent disk for:
-  - the SQLite database
-  - uploaded encrypted files
+- Node 20 runtime
+- Build command: `npm ci && npm run build`
+- Start command: `npm start`
+- Health check route: `/api/health`
+- Persistent disk mounted at `/opt/render/project/data`
+- `DATA_DIR` environment variable pointing to the persistent disk
+- `SESSION_SECRET` generated automatically by Render
 
 ### Deploy steps
 
 1. Push this project to GitHub.
 2. In Render, choose `New +` -> `Blueprint`.
 3. Connect your GitHub repository.
-4. Render will detect `render.yaml` automatically.
-5. Deploy the service.
+4. Render will read `render.yaml` automatically.
+5. Wait for the build to finish.
+6. Open the generated Render URL.
 
-### Render configuration included
+### After deployment
 
-- Build command: `npm install && npm run client:build`
-- Start command: `npm start`
-- Persistent disk mounted at `/opt/render/project/data`
-- `DATA_DIR` environment variable set automatically
-- `SESSION_SECRET` generated automatically
+Your live project URL will look similar to:
+
+```text
+https://krypt-secure-file-sharing.onrender.com
+```
+
+Use your real Render URL in your resume, for example:
+
+```text
+Krypt Secure File Sharing - https://your-render-url.onrender.com
+```
 
 ### Important
 
-- This app should be deployed on Render with a persistent disk.
-- Without persistent storage, SQLite data and uploaded files will be lost on restart or redeploy.
+- This app must use the persistent disk on Render.
+- SQLite data and encrypted uploads are stored inside the Render disk path.
+- If you remove the disk, uploaded files and database records will be lost.
 
 ## Future Improvements
 

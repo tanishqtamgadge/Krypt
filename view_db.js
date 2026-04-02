@@ -1,7 +1,8 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
-const dbPath = path.resolve(__dirname, "app_data.db");
+const dataRoot = process.env.DATA_DIR || process.env.RENDER_DISK_ROOT || __dirname;
+const dbPath = path.resolve(dataRoot, "app_data.db");
 const db = new sqlite3.Database(dbPath);
 
 function printTable(tableName) {

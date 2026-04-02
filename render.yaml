@@ -3,8 +3,9 @@ services:
     name: krypt-secure-file-sharing
     runtime: node
     plan: starter
-    buildCommand: npm install && npm run client:build
+    buildCommand: npm ci && npm run build
     startCommand: npm start
+    healthCheckPath: /api/health
     disk:
       name: krypt-data
       mountPath: /opt/render/project/data

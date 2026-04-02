@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node public/app.js",
+    "build": "npm run client:build",
     "client:dev": "vite",
     "client:build": "vite build"
   },

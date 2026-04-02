@@ -14,17 +14,26 @@ const DATA_ROOT = process.env.DATA_DIR || process.env.RENDER_DISK_ROOT || BASE_D
 const UPLOAD_FOLDER = path.join(DATA_ROOT, "uploads");
 const CLIENT_DIST_DIR = path.join(BASE_DIR, "frontend", "dist");
 const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(16).toString("hex");
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
+    name: "krypt.sid",
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: IS_PRODUCTION,
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    }
   })
 );
 
@@ -99,6 +108,16 @@ function sendAuth(res, username = null) {
 
 app.get("/api/auth/session", (req, res) => {
   sendAuth(res, req.session.username || null);
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    ok: true,
+    storage: {
+      dataRoot: DATA_ROOT,
+      uploadFolder: UPLOAD_FOLDER
+    }
+  });
 });
 
 app.post("/api/auth/login", async (req, res) => {
@@ -423,12 +442,23 @@ if (fs.existsSync(CLIENT_DIST_DIR)) {
   });
 }
 
+app.use((error, req, res, next) => {
+  console.error(error);
+  if (res.headersSent) {
+    next(error);
+    return;
+  }
+  res.status(500).json({ error: "Something went wrong on the server." });
+});
+
 async function start() {
+  fs.mkdirSync(DATA_ROOT, { recursive: true });
   fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
   await createTables();
   const port = Number(process.env.PORT) || 5000;
   app.listen(port, () => {
     console.log(`Node app running on port ${port}`);
+    console.log(`Database and uploads are stored in ${DATA_ROOT}`);
   });
 }
 
